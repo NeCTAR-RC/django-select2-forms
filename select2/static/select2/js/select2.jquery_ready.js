@@ -49,6 +49,16 @@ var DjangoSelect2 = window.DjangoSelect2 || {};
         if (typeof options.ajax == 'object') {
             options = $.extend(true, ajaxOptions, options);
         }
+        // Hack!
+        if (input.getAttribute('name').startsWith('field_of_research')) {
+            options.matcher = function(term, text, opt) {
+                if (term.match(/[0-9]+/)) {
+                    return text.startsWith(term);
+                } else {
+                    return text.toUpperCase().indexOf(term.toUpperCase()) >= 0;
+	        }
+            };
+        }
         $input.select2(options);
         if ($input.data('sortable') && typeof $.fn.djs2sortable == 'function') {
             $input.select2("container").find("ul.select2-choices").djs2sortable({
