@@ -1,0 +1,8 @@
+Code-Review+1: Stephen Crawley <s.crawley@uq.edu.au>
+Code-Review+2: Andy Botting <andy.botting@ardc.edu.au>
+Verified+1: Jenkins <no-reply+jenkins@nectar.org.au>
+Submitted-by: Stephen Crawley <s.crawley@uq.edu.au>
+Submitted-at: Mon, 31 Aug 2020 12:48:53 +1000
+Reviewed-on: https://review.rc.nectar.org.au/c/NeCTAR-RC/django-select2-forms/+/24986
+Project: NeCTAR-RC/django-select2-forms
+Branch: refs/heads/nectar/master
