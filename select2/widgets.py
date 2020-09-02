@@ -23,6 +23,7 @@ class Select(widgets.Input):
 
     class Media:
         js = (
+            "admin/js/jquery.init.js",
             "select2/js/select2.jquery_ready.js",
             "select2/js/select2.jquery_ui_sortable.js",
             "select2/js/select2.js",
