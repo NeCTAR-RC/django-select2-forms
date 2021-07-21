@@ -96,7 +96,7 @@ class Select(widgets.Input):
             "text": force_text(option_label),
         }
 
-    def render(self, name, value, attrs=None, choices=(), js_options=None):
+    def render(self, name, value, attrs=None, choices=(), js_options=None, **kwargs):
         options = {}
         attrs = dict(self.attrs, **(attrs or {}))
         js_options = js_options or {}
