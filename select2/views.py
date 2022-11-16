@@ -40,11 +40,13 @@ class JsonResponse(HttpResponse):
 
 class Select2View(object):
 
-    def __init__(self, request, app_label, model_name, field_name):
+    def __init__(self, request, app_label, model_name, field_name,
+                 choice_iterator_cls=ModelChoiceIterator):
         self.request = request
         self.app_label = app_label
         self.model_name = model_name
         self.field_name = field_name
+        self.choice_iterator_cls = choice_iterator_cls
 
     _field = None
 
@@ -89,7 +91,7 @@ class Select2View(object):
             offset = None
 
         formfield.queryset = queryset
-        iterator = ModelChoiceIterator(formfield)
+        iterator = self.choice_iterator_cls(formfield)
 
         if offset is None:
             total_count = len(iterator)
@@ -107,7 +109,8 @@ class Select2View(object):
             if value is u'':
                 continue
             
-            if ModelChoiceIteratorValue and isinstance(value, ModelChoiceIteratorValue):
+            if ModelChoiceIteratorValue \
+               and isinstance(value, ModelChoiceIteratorValue):
                 # ModelChoiceIteratorValue was added in Django 3.1
                 value = value.value
 
