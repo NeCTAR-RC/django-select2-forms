@@ -108,6 +108,7 @@ class Select(widgets.Input):
 
         if self.ajax:
             ajax_url = options.pop('ajax_url', None)
+            ajax_init_url = options.pop('ajax_init_url', None)
             quiet_millis = options.pop('quietMillis', 100)
             is_jsonp = options.pop('jsonp', False)
 
@@ -139,7 +140,8 @@ class Select(widgets.Input):
 
         if self.ajax:
             attrs.update({
-                'data-init-selection-url': self.reverse('select2_init_selection'),
+                'data-init-selection-url':
+                ajax_init_url or self.reverse('select2_init_selection'),
             })
         if self.ajax or self.sortable:
             self.input_type = 'hidden'

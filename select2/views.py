@@ -41,12 +41,14 @@ class JsonResponse(HttpResponse):
 class Select2View(object):
 
     def __init__(self, request, app_label, model_name, field_name,
-                 choice_iterator_cls=ModelChoiceIterator):
+                 choice_iterator_cls=ModelChoiceIterator,
+                 fetch_filter_mapper=None):
         self.request = request
         self.app_label = app_label
         self.model_name = model_name
         self.field_name = field_name
         self.choice_iterator_cls = choice_iterator_cls
+        self.fetch_filter_mapper = fetch_filter_mapper
 
     _field = None
 
@@ -106,7 +108,7 @@ class Select2View(object):
             'results': [],
         }
         for value, label in iterator:
-            if value is u'':
+            if value == u'':
                 continue
             
             if ModelChoiceIteratorValue \
@@ -176,6 +178,7 @@ class Select2View(object):
         q = self.request.GET.get('q', None)
         page_limit = self.request.GET.get('page_limit', 10)
         page = self.request.GET.get('page', 1)
+        f = self.request.GET.get('filter', None)
 
         try:
             if q is None:
@@ -211,6 +214,14 @@ class Select2View(object):
             q_obj = models.Q(**{qset_contains_filter_key: q})
 
         queryset = queryset.filter(q_obj)
+
+        if f and self.fetch_filter_mapper:
+            dq_obj = self.fetch_filter_mapper(f)
+            if dq_obj:
+                try:
+                    queryset = queryset.filter(dq_obj)
+                except InvalidParameter as e:
+                    return self.get_response({'error': str(e)}, status=500)
 
         data = self.get_data(queryset, page, page_limit)
         return self.get_response(data)

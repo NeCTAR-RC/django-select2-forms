@@ -8,15 +8,32 @@ var DjangoSelect2 = window.DjangoSelect2 || {};
 
     DjangoSelect2.init = function(input) {
         var $input = $(input);
+        var dataFunction;
+        var inputId = input.id;
+        // Hack!
+        if (inputId.includes('organization')) {
+            dataFunction = function(term, page) {
+                var checked = $('#' + inputId + "_anz").prop('checked');
+                return {
+                    q: term,
+                    page: page,
+                    page_limit: 10,
+                    filter: checked ? 'anz' : 'all',
+                };
+            }
+        } else {
+            dataFunction = function(term, page) {
+                return {
+                    q: term,
+                    page: page,
+                    page_limit: 10
+                };
+            }
+        }
+
         var ajaxOptions = {
             ajax: {
-                data: function(term, page) {
-                    return {
-                        q: term,
-                        page: page,
-                        page_limit: 10
-                    };
-                },
+                data: dataFunction,
                 results: function(data, page) {
                     return data;
                 }
