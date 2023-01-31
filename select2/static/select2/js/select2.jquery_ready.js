@@ -11,14 +11,17 @@ var DjangoSelect2 = window.DjangoSelect2 || {};
         var dataFunction;
         var inputId = input.id;
         // Hack!
-        if (inputId.includes('organization')) {
+        if (inputId.includes('organisation')) {
             dataFunction = function(term, page) {
-                var checked = $('#' + inputId + "_anz").prop('checked');
+                var optionId = inputId + "_anz";
+                var option = document.getElementById(optionId);
+                var checked = option.checked;
+                var single = inputId.includes('primary')
                 return {
                     q: term,
                     page: page,
                     page_limit: 10,
-                    filter: checked ? 'anz' : 'all',
+                    filter: (checked ? 'anz' : 'world') + (single ? '-single' : ''),
                 };
             }
         } else {
@@ -58,6 +61,9 @@ var DjangoSelect2 = window.DjangoSelect2 || {};
                         if (typeof(data) == 'object' && typeof(data.results) == 'object' && data.results) {
                             callback(data.results);
                         }
+                    },
+                    xhrFields: {
+                        withCredentials: true
                     }
                 });
             }

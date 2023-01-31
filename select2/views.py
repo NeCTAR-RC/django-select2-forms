@@ -216,7 +216,7 @@ class Select2View(object):
         queryset = queryset.filter(q_obj)
 
         if f and self.fetch_filter_mapper:
-            dq_obj = self.fetch_filter_mapper(f)
+            dq_obj = self.fetch_filter_mapper(f, user=self.request.user)
             if dq_obj:
                 try:
                     queryset = queryset.filter(dq_obj)
